@@ -1,7 +1,9 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
-  --color-primary: #0f172a; /* Deep blue placeholder */
+  --color-primary: #0f172a;
+  /* Deep blue placeholder */
   --font-sans: var(--font-inter);
 }
 
