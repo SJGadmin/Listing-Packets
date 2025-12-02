@@ -68,7 +68,7 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
                             alt="Cover"
                             className="w-full h-full object-cover opacity-40"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-transparent" />
                     </div>
                 )}
 
@@ -86,36 +86,72 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
                     )}
                 </div>
 
-                {/* Agent Info - Responsive positioning */}
+                {/* Agent Info - Split on mobile, stacked on desktop */}
                 {packet.agent && (
-                    <div className="absolute bottom-4 left-4 md:bottom-8 md:left-12 lg:left-16 xl:left-20 z-10 flex flex-col items-center">
-                        {/* Headshot above the card, centered - smaller on mobile */}
-                        {packet.agent.headshot_url ? (
-                            <img
-                                src={packet.agent.headshot_url}
-                                alt={packet.agent.name}
-                                className="w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full object-cover border-2 md:border-4 border-white shadow-xl mb-[-12px] md:mb-[-20px] relative z-10"
-                            />
-                        ) : (
-                            <div className="w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full bg-white flex items-center justify-center text-slate-600 border-2 md:border-4 border-white shadow-xl mb-[-12px] md:mb-[-20px] relative z-10">
-                                <span className="text-2xl md:text-4xl lg:text-5xl font-bold">{packet.agent.name.charAt(0)}</span>
+                    <>
+                        {/* Mobile layout: Headshot left, Contact right */}
+                        <div className="md:hidden absolute bottom-4 left-4 right-4 z-10 flex justify-between items-end">
+                            {/* Headshot - bottom left */}
+                            <div className="flex-shrink-0">
+                                {packet.agent.headshot_url ? (
+                                    <img
+                                        src={packet.agent.headshot_url}
+                                        alt={packet.agent.name}
+                                        className="w-20 h-20 rounded-full object-cover border-2 border-white shadow-xl"
+                                    />
+                                ) : (
+                                    <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-slate-600 border-2 border-white shadow-xl">
+                                        <span className="text-2xl font-bold">{packet.agent.name.charAt(0)}</span>
+                                    </div>
+                                )}
                             </div>
-                        )}
-                        {/* Card with contact info - more compact on mobile */}
-                        <div className="bg-white/90 backdrop-blur-md rounded-lg p-3 pt-5 md:p-4 md:pt-8 lg:p-5 lg:pt-10 shadow-xl min-w-[160px] md:min-w-[200px] lg:min-w-[240px] text-center">
-                            <p className="font-bold text-slate-900 text-sm md:text-base lg:text-lg mb-1 md:mb-2">{packet.agent.name}</p>
-                            {packet.agent.phone && (
-                                <a href={`tel:${packet.agent.phone}`} className="text-xs md:text-sm text-slate-700 mb-0.5 md:mb-1 hover:text-slate-900 hover:underline block">
-                                    {packet.agent.phone}
-                                </a>
-                            )}
-                            {packet.agent.email && (
-                                <a href={`mailto:${packet.agent.email}`} className="text-xs md:text-sm text-slate-700 hover:text-slate-900 hover:underline block truncate max-w-[140px] md:max-w-[180px] lg:max-w-none mx-auto">
-                                    {packet.agent.email}
-                                </a>
-                            )}
+
+                            {/* Contact info card - bottom right */}
+                            <div className="bg-white/70 rounded-lg p-3 shadow-xl text-center">
+                                <p className="font-bold text-slate-900 text-sm mb-1">{packet.agent.name}</p>
+                                {packet.agent.phone && (
+                                    <a href={`tel:${packet.agent.phone}`} className="text-xs text-slate-700 mb-0.5 hover:text-slate-900 hover:underline block">
+                                        {packet.agent.phone}
+                                    </a>
+                                )}
+                                {packet.agent.email && (
+                                    <a href={`mailto:${packet.agent.email}`} className="text-xs text-slate-700 hover:text-slate-900 hover:underline block truncate max-w-[140px] mx-auto">
+                                        {packet.agent.email}
+                                    </a>
+                                )}
+                            </div>
                         </div>
-                    </div>
+
+                        {/* Desktop layout: Stacked (headshot above card) */}
+                        <div className="hidden md:flex absolute bottom-8 left-12 lg:left-16 xl:left-20 z-10 flex-col items-center">
+                            {/* Headshot above the card */}
+                            {packet.agent.headshot_url ? (
+                                <img
+                                    src={packet.agent.headshot_url}
+                                    alt={packet.agent.name}
+                                    className="w-32 h-32 lg:w-40 lg:h-40 rounded-full object-cover border-4 border-white shadow-xl mb-[-20px] relative z-10"
+                                />
+                            ) : (
+                                <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full bg-white flex items-center justify-center text-slate-600 border-4 border-white shadow-xl mb-[-20px] relative z-10">
+                                    <span className="text-4xl lg:text-5xl font-bold">{packet.agent.name.charAt(0)}</span>
+                                </div>
+                            )}
+                            {/* Card with contact info */}
+                            <div className="bg-white/70 rounded-lg p-4 pt-8 lg:p-5 lg:pt-10 shadow-xl min-w-[200px] lg:min-w-[240px] text-center">
+                                <p className="font-bold text-slate-900 text-base lg:text-lg mb-2">{packet.agent.name}</p>
+                                {packet.agent.phone && (
+                                    <a href={`tel:${packet.agent.phone}`} className="text-sm text-slate-700 mb-1 hover:text-slate-900 hover:underline block">
+                                        {packet.agent.phone}
+                                    </a>
+                                )}
+                                {packet.agent.email && (
+                                    <a href={`mailto:${packet.agent.email}`} className="text-sm text-slate-700 hover:text-slate-900 hover:underline block">
+                                        {packet.agent.email}
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </>
                 )}
             </div>
 
