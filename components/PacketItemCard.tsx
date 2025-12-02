@@ -3,6 +3,7 @@
 import { PacketItem } from '@/types'
 import { FileText, Link as LinkIcon, Download, ExternalLink, Eye, X } from 'lucide-react'
 import { useState } from 'react'
+import FormattedText from './FormattedText'
 
 export default function PacketItemCard({ item }: { item: PacketItem }) {
     const [showPreview, setShowPreview] = useState(false)
@@ -17,9 +18,11 @@ export default function PacketItemCard({ item }: { item: PacketItem }) {
     if (item.type === 'text') {
         return (
             <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-bold text-slate-900 mb-4">{item.label}</h3>
-                <div className="prose prose-slate max-w-none text-slate-600 whitespace-pre-wrap">
-                    {item.content}
+                <h3 className="text-lg font-bold text-slate-900 mb-4">
+                    <FormattedText text={item.label} />
+                </h3>
+                <div className="prose prose-slate max-w-none text-slate-600">
+                    <FormattedText text={item.content || ''} />
                 </div>
             </div>
         )
@@ -27,23 +30,23 @@ export default function PacketItemCard({ item }: { item: PacketItem }) {
 
     return (
         <>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow flex items-center justify-between group">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4 group">
                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-colors flex-shrink-0">
                         {Icon && <Icon size={24} />}
                     </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-900">{item.label}</h3>
+                    <div className="min-w-0">
+                        <h3 className="text-lg font-bold text-slate-900 break-words">{item.label}</h3>
                         <p className="text-sm text-slate-500 capitalize">{item.type}</p>
                     </div>
                 </div>
 
                 {item.url && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
                         {canPreview && (
                             <button
                                 onClick={() => setShowPreview(true)}
-                                className="px-6 py-2 bg-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-300 transition-colors flex items-center gap-2"
+                                className="px-6 py-2 bg-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-300 transition-colors flex items-center justify-center gap-2"
                             >
                                 Preview <Eye size={16} />
                             </button>
@@ -53,7 +56,7 @@ export default function PacketItemCard({ item }: { item: PacketItem }) {
                             target="_blank"
                             rel="noopener noreferrer"
                             download={item.type === 'file'}
-                            className="px-6 py-2 bg-slate-900 text-white rounded-full text-sm font-medium hover:bg-slate-800 transition-colors flex items-center gap-2"
+                            className="px-6 py-2 bg-slate-900 text-white rounded-full text-sm font-medium hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
                         >
                             {item.type === 'file' ? (
                                 <>

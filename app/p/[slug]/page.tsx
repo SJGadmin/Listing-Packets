@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import PacketItemCard from '@/components/PacketItemCard'
+import DescriptionAccordion from '@/components/DescriptionAccordion'
+import FormattedText from '@/components/FormattedText'
 import { headers } from 'next/headers'
-import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 
@@ -76,40 +77,40 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
                     <p className="text-lg md:text-xl text-slate-200 font-light mb-2">Welcome to</p>
 
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-xl tracking-tight">
-                        {packet.title}
+                        <FormattedText text={packet.title} />
                     </h1>
                     {packet.subtitle && (
-                        <p className="text-xl md:text-2xl text-slate-200 font-light tracking-wide">
-                            {packet.subtitle}
-                        </p>
+                        <div className="text-xl md:text-2xl text-slate-200 font-light tracking-wide">
+                            <FormattedText text={packet.subtitle} />
+                        </div>
                     )}
                 </div>
 
-                {/* Agent Info - Bottom Left */}
+                {/* Agent Info - Responsive positioning */}
                 {packet.agent && (
-                    <div className="absolute bottom-8 left-8 z-10 flex flex-col items-center">
-                        {/* Headshot above the card, centered */}
+                    <div className="absolute bottom-4 left-4 md:bottom-8 md:left-12 lg:left-16 xl:left-20 z-10 flex flex-col items-center">
+                        {/* Headshot above the card, centered - smaller on mobile */}
                         {packet.agent.headshot_url ? (
                             <img
                                 src={packet.agent.headshot_url}
                                 alt={packet.agent.name}
-                                className="w-48 h-48 rounded-full object-cover border-4 border-white shadow-xl mb-[-24px] relative z-10"
+                                className="w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full object-cover border-2 md:border-4 border-white shadow-xl mb-[-12px] md:mb-[-20px] relative z-10"
                             />
                         ) : (
-                            <div className="w-48 h-48 rounded-full bg-white flex items-center justify-center text-slate-600 border-4 border-white shadow-xl mb-[-24px] relative z-10">
-                                <span className="text-5xl font-bold">{packet.agent.name.charAt(0)}</span>
+                            <div className="w-20 h-20 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full bg-white flex items-center justify-center text-slate-600 border-2 md:border-4 border-white shadow-xl mb-[-12px] md:mb-[-20px] relative z-10">
+                                <span className="text-2xl md:text-4xl lg:text-5xl font-bold">{packet.agent.name.charAt(0)}</span>
                             </div>
                         )}
-                        {/* Card with contact info */}
-                        <div className="bg-white/70 backdrop-blur-md rounded-lg p-5 pt-10 shadow-xl min-w-[240px] text-center">
-                            <p className="font-bold text-slate-900 text-lg mb-2">{packet.agent.name}</p>
+                        {/* Card with contact info - more compact on mobile */}
+                        <div className="bg-white/90 backdrop-blur-md rounded-lg p-3 pt-5 md:p-4 md:pt-8 lg:p-5 lg:pt-10 shadow-xl min-w-[160px] md:min-w-[200px] lg:min-w-[240px] text-center">
+                            <p className="font-bold text-slate-900 text-sm md:text-base lg:text-lg mb-1 md:mb-2">{packet.agent.name}</p>
                             {packet.agent.phone && (
-                                <a href={`tel:${packet.agent.phone}`} className="text-sm text-slate-700 mb-1 hover:text-slate-900 hover:underline block">
+                                <a href={`tel:${packet.agent.phone}`} className="text-xs md:text-sm text-slate-700 mb-0.5 md:mb-1 hover:text-slate-900 hover:underline block">
                                     {packet.agent.phone}
                                 </a>
                             )}
                             {packet.agent.email && (
-                                <a href={`mailto:${packet.agent.email}`} className="text-sm text-slate-700 hover:text-slate-900 hover:underline block">
+                                <a href={`mailto:${packet.agent.email}`} className="text-xs md:text-sm text-slate-700 hover:text-slate-900 hover:underline block truncate max-w-[140px] md:max-w-[180px] lg:max-w-none mx-auto">
                                     {packet.agent.email}
                                 </a>
                             )}
@@ -122,11 +123,7 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
             {packet.description && (
                 <div className="w-full bg-white border-b border-slate-100">
                     <div className="max-w-[95%] md:max-w-7xl mx-auto px-4 py-12 md:py-16">
-                        <div className="prose prose-xl prose-slate max-w-none text-slate-700 leading-relaxed">
-                            {packet.description.split('\n').map((line: string, i: number) => (
-                                <p key={i} className="mb-4 last:mb-0">{line}</p>
-                            ))}
-                        </div>
+                        <DescriptionAccordion description={packet.description} />
                     </div>
                 </div>
             )}

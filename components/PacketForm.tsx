@@ -7,6 +7,7 @@ import { Packet, PacketItem } from '@/types'
 import { Loader2, Plus, Trash2, GripVertical, Upload, FileText, Link as LinkIcon, Type } from 'lucide-react'
 import clsx from 'clsx'
 import { v4 as uuidv4 } from 'uuid'
+import RichTextEditor from './RichTextEditor'
 
 interface PacketFormProps {
     initialPacket?: Packet
@@ -196,13 +197,11 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-slate-700">Title</label>
-                        <input
-                            type="text"
-                            required
+                        <RichTextEditor
                             value={title}
-                            onChange={e => setTitle(e.target.value)}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-slate-900 outline-none"
+                            onChange={setTitle}
                             placeholder="e.g. 123 Main St"
+                            rows={2}
                         />
                     </div>
 
@@ -225,22 +224,20 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
 
                     <div className="space-y-2 md:col-span-2">
                         <label className="block text-sm font-medium text-slate-700">Subtitle (Optional)</label>
-                        <input
-                            type="text"
+                        <RichTextEditor
                             value={subtitle}
-                            onChange={e => setSubtitle(e.target.value)}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-slate-900 outline-none"
+                            onChange={setSubtitle}
                             placeholder="e.g. Showing Packet"
+                            rows={2}
                         />
                     </div>
 
                     <div className="space-y-2 md:col-span-2">
                         <label className="block text-sm font-medium text-slate-700">Description (Optional)</label>
-                        <textarea
+                        <RichTextEditor
                             value={description}
-                            onChange={e => setDescription(e.target.value)}
-                            rows={3}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-slate-900 outline-none"
+                            onChange={setDescription}
+                            rows={4}
                         />
                     </div>
 
@@ -345,12 +342,11 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
                                 )}
 
                                 {item.type === 'text' && (
-                                    <textarea
+                                    <RichTextEditor
                                         value={item.content || ''}
-                                        onChange={e => updateItem(item.id, { content: e.target.value })}
+                                        onChange={(content) => updateItem(item.id, { content })}
                                         placeholder="Enter text content..."
-                                        rows={3}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                                        rows={4}
                                     />
                                 )}
                             </div>
