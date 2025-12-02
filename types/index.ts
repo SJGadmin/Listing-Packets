@@ -1,5 +1,15 @@
 export type PacketType = 'file' | 'link' | 'text';
 
+export interface Agent {
+    id: string;
+    name: string;
+    phone?: string;
+    email?: string;
+    headshot_url?: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface Packet {
     id: string;
     slug: string;
@@ -7,6 +17,8 @@ export interface Packet {
     subtitle?: string;
     description?: string;
     cover_image_url?: string;
+    agent_id?: string;
+    agent?: Agent;
     created_at: string;
     updated_at: string;
 }

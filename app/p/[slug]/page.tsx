@@ -27,7 +27,10 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
 
     const { data: packet } = await supabase
         .from('packets')
-        .select('*')
+        .select(`
+            *,
+            agent:agents(id, name, email, phone, headshot_url)
+        `)
         .eq('slug', slug)
         .single()
 
@@ -45,7 +48,16 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
         .order('order', { ascending: true })
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="min-h-screen bg-slate-50 relative">
+            {/* Topographic background pattern with opacity */}
+            <div
+                className="fixed inset-0 opacity-[0.05] pointer-events-none z-0"
+                style={{
+                    backgroundImage: 'url(/topographic-pattern.png)',
+                    backgroundRepeat: 'repeat',
+                    backgroundSize: '600px 600px',
+                }}
+            />
             {/* Hero Section */}
             <div className="relative h-[50vh] min-h-[400px] bg-slate-900 flex flex-col items-center justify-center text-center px-4">
                 {packet.cover_image_url && (
@@ -55,15 +67,13 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
                             alt="Cover"
                             className="w-full h-full object-cover opacity-40"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-900/60 to-slate-900" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50" />
                     </div>
                 )}
 
                 <div className="relative z-10 flex flex-col items-center max-w-5xl mx-auto">
-                    {/* Logo Placeholder */}
-                    <div className="w-24 h-24 rounded-full border-4 border-white bg-white shadow-xl mb-8 overflow-hidden flex items-center justify-center">
-                        <span className="text-slate-900 font-bold text-xs">LOGO</span>
-                    </div>
+                    {/* Welcome to text */}
+                    <p className="text-lg md:text-xl text-slate-200 font-light mb-2">Welcome to</p>
 
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-xl tracking-tight">
                         {packet.title}
@@ -74,13 +84,45 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
                         </p>
                     )}
                 </div>
+
+                {/* Agent Info - Bottom Left */}
+                {packet.agent && (
+                    <div className="absolute bottom-8 left-8 z-10 flex flex-col items-center">
+                        {/* Headshot above the card, centered */}
+                        {packet.agent.headshot_url ? (
+                            <img
+                                src={packet.agent.headshot_url}
+                                alt={packet.agent.name}
+                                className="w-48 h-48 rounded-full object-cover border-4 border-white shadow-xl mb-[-24px] relative z-10"
+                            />
+                        ) : (
+                            <div className="w-48 h-48 rounded-full bg-white flex items-center justify-center text-slate-600 border-4 border-white shadow-xl mb-[-24px] relative z-10">
+                                <span className="text-5xl font-bold">{packet.agent.name.charAt(0)}</span>
+                            </div>
+                        )}
+                        {/* Card with contact info */}
+                        <div className="bg-white/70 backdrop-blur-md rounded-lg p-5 pt-10 shadow-xl min-w-[240px] text-center">
+                            <p className="font-bold text-slate-900 text-lg mb-2">{packet.agent.name}</p>
+                            {packet.agent.phone && (
+                                <a href={`tel:${packet.agent.phone}`} className="text-sm text-slate-700 mb-1 hover:text-slate-900 hover:underline block">
+                                    {packet.agent.phone}
+                                </a>
+                            )}
+                            {packet.agent.email && (
+                                <a href={`mailto:${packet.agent.email}`} className="text-sm text-slate-700 hover:text-slate-900 hover:underline block">
+                                    {packet.agent.email}
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Description Section */}
             {packet.description && (
                 <div className="w-full bg-white border-b border-slate-100">
                     <div className="max-w-[95%] md:max-w-7xl mx-auto px-4 py-12 md:py-16">
-                        <div className="prose prose-lg prose-slate max-w-none text-slate-700 leading-relaxed">
+                        <div className="prose prose-xl prose-slate max-w-none text-slate-700 leading-relaxed">
                             {packet.description.split('\n').map((line: string, i: number) => (
                                 <p key={i} className="mb-4 last:mb-0">{line}</p>
                             ))}
@@ -103,9 +145,15 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
             </div>
 
             {/* Footer */}
-            <footer className="text-center py-12 text-slate-400 text-sm border-t border-slate-200 mt-12">
-                <p className="font-medium text-slate-600">Presented by Stewart & Jane Group</p>
-                <p className="mt-1">Real Estate Professionals</p>
+            <footer className="text-center py-12 border-t border-slate-200 mt-12">
+                <a
+                    href="https://www.stewartandjane.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-600 hover:text-slate-900 underline font-medium transition-colors"
+                >
+                    Stewart and Jane Group
+                </a>
             </footer>
         </div>
     )

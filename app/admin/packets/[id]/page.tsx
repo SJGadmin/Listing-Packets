@@ -26,6 +26,12 @@ export default async function EditPacketPage({ params }: { params: Promise<{ id:
         .eq('packet_id', id)
         .order('order', { ascending: true })
 
+    // Fetch agents
+    const { data: agents } = await supabase
+        .from('agents')
+        .select('*')
+        .order('name', { ascending: true })
+
     return (
         <div>
             <h1 className="text-2xl font-bold text-slate-900 mb-8">Edit Packet</h1>
@@ -33,6 +39,7 @@ export default async function EditPacketPage({ params }: { params: Promise<{ id:
                 initialPacket={packet}
                 initialItems={items || []}
                 isEditing={true}
+                agents={agents || []}
             />
         </div>
     )

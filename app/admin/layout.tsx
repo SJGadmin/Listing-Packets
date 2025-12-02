@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { logout } from '../actions/auth'
-import { LayoutDashboard, Plus, LogOut } from 'lucide-react'
+import { LayoutDashboard, Plus, LogOut, Users } from 'lucide-react'
 import clsx from 'clsx'
 
 export default function AdminLayout({
@@ -16,6 +16,7 @@ export default function AdminLayout({
     const navItems = [
         { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
         { href: '/admin/packets/new', label: 'New Packet', icon: Plus },
+        { href: '/admin/agents', label: 'Agents', icon: Users },
     ]
 
     return (

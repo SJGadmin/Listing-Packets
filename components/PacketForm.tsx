@@ -12,9 +12,10 @@ interface PacketFormProps {
     initialPacket?: Packet
     initialItems?: PacketItem[]
     isEditing?: boolean
+    agents?: any[]
 }
 
-export default function PacketForm({ initialPacket, initialItems = [], isEditing = false }: PacketFormProps) {
+export default function PacketForm({ initialPacket, initialItems = [], isEditing = false, agents = [] }: PacketFormProps) {
     const router = useRouter()
     const supabase = createClient()
     const [loading, setLoading] = useState(false)
@@ -25,6 +26,7 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
     const [subtitle, setSubtitle] = useState(initialPacket?.subtitle || '')
     const [description, setDescription] = useState(initialPacket?.description || '')
     const [coverImageUrl, setCoverImageUrl] = useState(initialPacket?.cover_image_url || '')
+    const [agentId, setAgentId] = useState(initialPacket?.agent_id || '')
 
     // Items State
     // We use a local ID for new items before they are saved to DB
@@ -110,6 +112,7 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
                 subtitle,
                 description,
                 cover_image_url: coverImageUrl,
+                agent_id: agentId || null,
                 updated_at: new Date().toISOString()
             }
 
@@ -253,6 +256,23 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
                                 <input type="file" accept="image/*" onChange={handleCoverUpload} className="hidden" />
                             </label>
                         </div>
+                    </div>
+
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="block text-sm font-medium text-slate-700">Assigned Agent (Optional)</label>
+                        <select
+                            value={agentId}
+                            onChange={e => setAgentId(e.target.value)}
+                            className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-slate-900 outline-none"
+                        >
+                            <option value="">No agent assigned</option>
+                            {agents.map((agent: any) => (
+                                <option key={agent.id} value={agent.id}>
+                                    {agent.name}
+                                </option>
+                            ))}
+                        </select>
+                        <p className="text-xs text-slate-500">Select the agent to display on this packet's public page.</p>
                     </div>
                 </div>
             </div>

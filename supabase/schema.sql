@@ -86,3 +86,29 @@ create policy "Public Access"
 create policy "Public Upload"
   on storage.objects for insert
   with check ( bucket_id = 'packet-assets' );
+-- Create Agents table
+create table agents (
+  id uuid default gen_random_uuid() primary key,
+  name text not null,
+  phone text,
+  email text,
+  headshot_url text,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Add agent_id to packets
+alter table packets add column agent_id uuid references agents(id) on delete set null;
+
+-- Enable RLS for agents
+alter table agents enable row level security;
+
+-- Policies for agents
+create policy "Public agents are viewable by everyone"
+  on agents for select
+  using (true);
+
+create policy "Enable all access for all users"
+  on agents for all
+  using (true)
+  with check (true);
