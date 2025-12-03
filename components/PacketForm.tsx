@@ -31,8 +31,68 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
 
     // Items State
     // We use a local ID for new items before they are saved to DB
+    // If creating a new packet (not editing), add default items
+    const getInitialItems = () => {
+        if (initialItems.length > 0) {
+            return initialItems.map(item => ({ ...item }))
+        }
+
+        // Default items for new packets
+        if (!isEditing) {
+            return [
+                {
+                    id: uuidv4(),
+                    packet_id: '',
+                    type: 'file' as const,
+                    label: 'Offer Instructions',
+                    order: 0,
+                    created_at: new Date().toISOString(),
+                    isNew: true
+                },
+                {
+                    id: uuidv4(),
+                    packet_id: '',
+                    type: 'file' as const,
+                    label: "Seller's Disclosure",
+                    order: 1,
+                    created_at: new Date().toISOString(),
+                    isNew: true
+                },
+                {
+                    id: uuidv4(),
+                    packet_id: '',
+                    type: 'file' as const,
+                    label: 'MLS Listing',
+                    order: 2,
+                    created_at: new Date().toISOString(),
+                    isNew: true
+                },
+                {
+                    id: uuidv4(),
+                    packet_id: '',
+                    type: 'link' as const,
+                    label: 'View the property on our website!',
+                    order: 3,
+                    created_at: new Date().toISOString(),
+                    isNew: true
+                },
+                {
+                    id: uuidv4(),
+                    packet_id: '',
+                    type: 'text' as const,
+                    label: "What our seller's love about the property!",
+                    order: 4,
+                    created_at: new Date().toISOString(),
+                    isNew: true
+                }
+            ]
+        }
+
+        return []
+    }
+
     const [items, setItems] = useState<(PacketItem & { isNew?: boolean, file?: File })[]>(
-        initialItems.map(item => ({ ...item }))
+        getInitialItems()
     )
 
     const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
