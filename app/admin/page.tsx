@@ -8,14 +8,22 @@ export const dynamic = 'force-dynamic'
 export default async function AdminDashboard() {
     const supabase = createClient()
 
-    // Fetch packets with view counts
+    // Fetch packets
     const { data: packets, error } = await supabase
         .from('packets')
-        .select(`
-      *,
-      packet_views (count)
-    `)
+        .select('*')
         .order('created_at', { ascending: false })
+
+    // Fetch view counts separately for each packet
+    const packetsWithViews = await Promise.all(
+        (packets || []).map(async (packet) => {
+            const { count } = await supabase
+                .from('packet_views')
+                .select('*', { count: 'exact', head: true })
+                .eq('packet_id', packet.id)
+            return { ...packet, viewCount: count || 0 }
+        })
+    )
 
     if (error) {
         return (
@@ -42,7 +50,7 @@ export default async function AdminDashboard() {
             </div>
 
             <div className="grid gap-4">
-                {packets?.map((packet: any) => (
+                {packetsWithViews?.map((packet: any) => (
                     <div
                         key={packet.id}
                         className="bg-white p-6 rounded-lg shadow-sm border border-slate-200 flex items-center justify-between hover:shadow-md transition-shadow"
@@ -66,7 +74,7 @@ export default async function AdminDashboard() {
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <Eye size={14} />
-                                    {packet.packet_views?.[0]?.count || 0} views
+                                    {packet.viewCount} views
                                 </div>
                             </div>
                         </div>
