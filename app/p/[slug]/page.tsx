@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import PacketItemCard from '@/components/PacketItemCard'
 import DescriptionAccordion from '@/components/DescriptionAccordion'
 import FormattedText from '@/components/FormattedText'
+import FeedbackForm from '@/components/FeedbackForm'
 import { headers } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
@@ -175,6 +176,11 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
                         This packet has no items yet.
                     </div>
                 )}
+            </div>
+
+            {/* Feedback Section */}
+            <div className="max-w-[95%] md:max-w-3xl mx-auto px-4 pb-12">
+                <FeedbackForm packetId={packet.id} />
             </div>
 
             {/* Footer */}

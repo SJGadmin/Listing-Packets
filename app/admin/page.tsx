@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase'
 import Link from 'next/link'
-import { Plus, ExternalLink, Eye, Calendar } from 'lucide-react'
+import { Plus, ExternalLink, Eye, Calendar, MessageSquare } from 'lucide-react'
 import { Packet } from '@/types'
 
 export const dynamic = 'force-dynamic'
@@ -14,14 +14,20 @@ export default async function AdminDashboard() {
         .select('*')
         .order('created_at', { ascending: false })
 
-    // Fetch view counts separately for each packet
+    // Fetch view counts and feedback counts separately for each packet
     const packetsWithViews = await Promise.all(
         (packets || []).map(async (packet) => {
-            const { count } = await supabase
+            const { count: viewCount } = await supabase
                 .from('packet_views')
                 .select('*', { count: 'exact', head: true })
                 .eq('packet_id', packet.id)
-            return { ...packet, viewCount: count || 0 }
+
+            const { count: feedbackCount } = await supabase
+                .from('packet_feedback')
+                .select('*', { count: 'exact', head: true })
+                .eq('packet_id', packet.id)
+
+            return { ...packet, viewCount: viewCount || 0, feedbackCount: feedbackCount || 0 }
         })
     )
 
@@ -79,7 +85,7 @@ export default async function AdminDashboard() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             <a
                                 href={`/p/${packet.slug}`}
                                 target="_blank"
@@ -89,6 +95,18 @@ export default async function AdminDashboard() {
                             >
                                 <ExternalLink size={20} />
                             </a>
+                            <Link
+                                href={`/admin/packets/${packet.id}/feedback`}
+                                className="relative p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-md transition-colors"
+                                title="View Feedback"
+                            >
+                                <MessageSquare size={20} />
+                                {packet.feedbackCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                                        {packet.feedbackCount}
+                                    </span>
+                                )}
+                            </Link>
                             <Link
                                 href={`/admin/packets/${packet.id}`}
                                 className="px-4 py-2 border border-slate-200 text-slate-600 rounded-md hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium"

@@ -112,3 +112,25 @@ create policy "Enable all access for all users"
   on agents for all
   using (true)
   with check (true);
+
+-- Create Packet Feedback table
+create table packet_feedback (
+  id uuid default gen_random_uuid() primary key,
+  packet_id uuid references packets(id) on delete cascade not null,
+  agent_name text not null,
+  feedback text not null,
+  rating integer not null check (rating >= 1 and rating <= 5),
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Enable RLS for feedback
+alter table packet_feedback enable row level security;
+
+-- Policies for feedback
+create policy "Public feedback is viewable by everyone"
+  on packet_feedback for select
+  using (true);
+
+create policy "Enable insert for feedback"
+  on packet_feedback for insert
+  with check (true);

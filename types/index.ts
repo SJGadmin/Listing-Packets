@@ -41,3 +41,12 @@ export interface PacketView {
     user_agent?: string;
     ip_hash?: string;
 }
+
+export interface PacketFeedback {
+    id: string;
+    packet_id: string;
+    agent_name: string;
+    feedback: string;
+    rating: number;
+    created_at: string;
+}
