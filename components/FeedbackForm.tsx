@@ -61,7 +61,7 @@ export default function FeedbackForm({ packetId }: { packetId: string }) {
     return (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
             <h3 className="text-2xl font-bold text-slate-900 mb-2">Share Your Feedback</h3>
-            <p className="text-slate-600 mb-6">We'd love to hear about your experience viewing this packet.</p>
+            <p className="text-slate-600 mb-6">We'd love to hear about your experience viewing this listing.</p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Agent Name */}
@@ -119,7 +119,7 @@ export default function FeedbackForm({ packetId }: { packetId: string }) {
                         onChange={(e) => setFeedback(e.target.value)}
                         rows={4}
                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none resize-none"
-                        placeholder="Tell us what you thought about this packet..."
+                        placeholder="Tell us what you thought about this listing..."
                         required
                     />
                 </div>
