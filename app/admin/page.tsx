@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase'
 import Link from 'next/link'
 import { Plus, ExternalLink, Eye, Calendar, MessageSquare } from 'lucide-react'
 import { Packet } from '@/types'
+import DeletePacketButton from '@/components/DeletePacketButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -113,6 +114,7 @@ export default async function AdminDashboard() {
                             >
                                 Edit
                             </Link>
+                            <DeletePacketButton packetId={packet.id} packetTitle={packet.title} />
                         </div>
                     </div>
                 ))}
