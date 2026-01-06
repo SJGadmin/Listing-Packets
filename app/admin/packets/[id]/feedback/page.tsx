@@ -67,7 +67,7 @@ export default async function PacketFeedbackPage({ params }: { params: Promise<{
             {/* Feedback List */}
             <div className="space-y-4">
                 {feedbackList && feedbackList.length > 0 ? (
-                    feedbackList.map((feedback: PacketFeedback) => (
+                    feedbackList.map((feedback) => (
                         <div
                             key={feedback.id}
                             className="bg-white rounded-lg shadow-sm border border-slate-200 p-6"
