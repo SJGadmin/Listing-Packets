@@ -106,7 +106,7 @@ export default async function AdminDashboard() {
                     </div>
                 ))}
 
-                {packets?.length === 0 && (
+                {packetsWithViews?.length === 0 && (
                     <div className="text-center py-12 bg-white rounded-lg border border-dashed border-slate-300">
                         <p className="text-slate-500 mb-4">No packets created yet.</p>
                         <Link
