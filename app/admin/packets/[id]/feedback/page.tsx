@@ -19,11 +19,12 @@ export default async function PacketFeedbackPage({ params }: { params: Promise<{
     }
 
     // Fetch feedback for this packet
-    const { rows: feedbackList } = await sql`
+    const { rows } = await sql`
         SELECT * FROM packet_feedback
         WHERE packet_id = ${id}
         ORDER BY created_at DESC
     `
+    const feedbackList = rows as PacketFeedback[]
 
     const renderStars = (rating: number) => {
         return (
