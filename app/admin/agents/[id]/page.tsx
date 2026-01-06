@@ -1,6 +1,5 @@
 'use client'
 
-import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -17,19 +16,18 @@ export default function EditAgentPage({ params }: { params: Promise<{ id: string
 
     useEffect(() => {
         async function fetchAgent() {
-            const supabase = createClient()
-            const { data, error } = await supabase
-                .from('agents')
-                .select('*')
-                .eq('id', id)
-                .single()
-
-            if (error) {
-                setError('Failed to load agent')
-            } else {
+            try {
+                const response = await fetch(`/api/agents/${id}`)
+                if (!response.ok) {
+                    throw new Error('Failed to load agent')
+                }
+                const data = await response.json()
                 setAgent(data)
+            } catch (err) {
+                setError('Failed to load agent')
+            } finally {
+                setFetching(false)
             }
-            setFetching(false)
         }
 
         fetchAgent()
@@ -46,44 +44,51 @@ export default function EditAgentPage({ params }: { params: Promise<{ id: string
         const phone = formData.get('phone') as string
         const headshot_url = formData.get('headshot_url') as string
 
-        const supabase = createClient()
-
-        const { error: updateError } = await supabase
-            .from('agents')
-            .update({
-                name,
-                email: email || null,
-                phone: phone || null,
-                headshot_url: headshot_url || null,
-                updated_at: new Date().toISOString(),
+        try {
+            const response = await fetch(`/api/agents/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    email: email || null,
+                    phone: phone || null,
+                    headshot_url: headshot_url || null,
+                }),
             })
-            .eq('id', id)
 
-        if (updateError) {
-            setError(updateError.message)
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || 'Failed to update agent')
+            }
+
+            router.push('/admin/agents')
+            router.refresh()
+        } catch (err: any) {
+            setError(err.message)
             setLoading(false)
-            return
         }
-
-        router.push('/admin/agents')
-        router.refresh()
     }
 
     async function handleDelete() {
         if (!confirm('Are you sure you want to delete this agent?')) return
 
         setLoading(true)
-        const supabase = createClient()
-        const { error } = await supabase.from('agents').delete().eq('id', id)
+        try {
+            const response = await fetch(`/api/agents/${id}`, {
+                method: 'DELETE',
+            })
 
-        if (error) {
-            setError(error.message)
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || 'Failed to delete agent')
+            }
+
+            router.push('/admin/agents')
+            router.refresh()
+        } catch (err: any) {
+            setError(err.message)
             setLoading(false)
-            return
         }
-
-        router.push('/admin/agents')
-        router.refresh()
     }
 
     if (fetching) {

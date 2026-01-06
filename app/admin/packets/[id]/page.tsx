@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import PacketForm from '@/components/PacketForm'
 import { notFound } from 'next/navigation'
 
@@ -6,31 +6,27 @@ export const dynamic = 'force-dynamic'
 
 export default async function EditPacketPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const supabase = createClient()
 
     // Fetch packet
-    const { data: packet, error: packetError } = await supabase
-        .from('packets')
-        .select('*')
-        .eq('id', id)
-        .single()
+    const { rows: [packet] } = await sql`
+        SELECT * FROM packets WHERE id = ${id}
+    `
 
-    if (packetError || !packet) {
+    if (!packet) {
         notFound()
     }
 
     // Fetch items
-    const { data: items, error: itemsError } = await supabase
-        .from('packet_items')
-        .select('*')
-        .eq('packet_id', id)
-        .order('order', { ascending: true })
+    const { rows: items } = await sql`
+        SELECT * FROM packet_items
+        WHERE packet_id = ${id}
+        ORDER BY "order" ASC
+    `
 
     // Fetch agents
-    const { data: agents } = await supabase
-        .from('agents')
-        .select('*')
-        .order('name', { ascending: true })
+    const { rows: agents } = await sql`
+        SELECT * FROM agents ORDER BY name ASC
+    `
 
     return (
         <div>

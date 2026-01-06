@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase'
 import { Packet, PacketItem } from '@/types'
 import { Loader2, Plus, Trash2, GripVertical, Upload, FileText, Link as LinkIcon, Type } from 'lucide-react'
 import clsx from 'clsx'
@@ -18,7 +17,6 @@ interface PacketFormProps {
 
 export default function PacketForm({ initialPacket, initialItems = [], isEditing = false, agents = [] }: PacketFormProps) {
     const router = useRouter()
-    const supabase = createClient()
     const [loading, setLoading] = useState(false)
 
     // Packet State
@@ -99,27 +97,29 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
         if (!e.target.files || e.target.files.length === 0) return
 
         const file = e.target.files[0]
-        const fileExt = file.name.split('.').pop()
-        const fileName = `${Math.random()}.${fileExt}`
-        const filePath = `covers/${fileName}`
-
         setLoading(true)
-        const { error: uploadError } = await supabase.storage
-            .from('packet-assets')
-            .upload(filePath, file)
 
-        if (uploadError) {
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('folder', 'covers')
+
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            })
+
+            if (!response.ok) {
+                throw new Error('Upload failed')
+            }
+
+            const data = await response.json()
+            setCoverImageUrl(data.url)
+        } catch (error) {
             alert('Error uploading cover image')
+        } finally {
             setLoading(false)
-            return
         }
-
-        const { data: { publicUrl } } = supabase.storage
-            .from('packet-assets')
-            .getPublicUrl(filePath)
-
-        setCoverImageUrl(publicUrl)
-        setLoading(false)
     }
 
     const addItem = (type: 'file' | 'link' | 'text') => {
@@ -174,46 +174,45 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
                 description,
                 cover_image_url: coverImageUrl,
                 agent_id: agentId || null,
-                updated_at: new Date().toISOString()
             }
 
             let packetId = initialPacket?.id
 
             if (isEditing && packetId) {
-                const { error } = await supabase
-                    .from('packets')
-                    .update(packetData)
-                    .eq('id', packetId)
-                if (error) throw error
+                const response = await fetch(`/api/packets/${packetId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(packetData),
+                })
+                if (!response.ok) throw new Error('Failed to update packet')
             } else {
-                const { data, error } = await supabase
-                    .from('packets')
-                    .insert([packetData])
-                    .select()
-                    .single()
-                if (error) throw error
+                const response = await fetch('/api/packets', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(packetData),
+                })
+                if (!response.ok) throw new Error('Failed to create packet')
+                const data = await response.json()
                 packetId = data.id
             }
 
-            // 2. Handle Items
-            // Upload files for new file items
+            // 2. Handle Items - Upload files for file items
             const processedItems = await Promise.all(items.map(async (item, index) => {
                 let url = item.url
 
                 if (item.type === 'file' && item.file) {
-                    const fileExt = item.file.name.split('.').pop()
-                    const fileName = `${packetId}/${Math.random()}.${fileExt}`
-                    const { error: uploadError } = await supabase.storage
-                        .from('packet-assets')
-                        .upload(fileName, item.file)
+                    const formData = new FormData()
+                    formData.append('file', item.file)
+                    formData.append('folder', `packets/${packetId}`)
 
-                    if (uploadError) throw uploadError
+                    const uploadResponse = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData,
+                    })
 
-                    const { data: { publicUrl } } = supabase.storage
-                        .from('packet-assets')
-                        .getPublicUrl(fileName)
-
-                    url = publicUrl
+                    if (!uploadResponse.ok) throw new Error('File upload failed')
+                    const uploadData = await uploadResponse.json()
+                    url = uploadData.url
                 }
 
                 return {
@@ -226,18 +225,17 @@ export default function PacketForm({ initialPacket, initialItems = [], isEditing
                 }
             }))
 
-            // Delete existing items for this packet (simplest way to handle reordering/deletions)
-            if (isEditing && packetId) {
-                await supabase.from('packet_items').delete().eq('packet_id', packetId)
-            }
+            // 3. Save items via API
+            const itemsResponse = await fetch('/api/packet-items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    packet_id: packetId,
+                    items: processedItems
+                }),
+            })
 
-            // Insert all items
-            if (processedItems.length > 0) {
-                const { error: itemsError } = await supabase
-                    .from('packet_items')
-                    .insert(processedItems)
-                if (itemsError) throw itemsError
-            }
+            if (!itemsResponse.ok) throw new Error('Failed to save packet items')
 
             router.push('/admin')
             router.refresh()

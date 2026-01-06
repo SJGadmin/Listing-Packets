@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import PacketItemCard from '@/components/PacketItemCard'
 import DescriptionAccordion from '@/components/DescriptionAccordion'
@@ -9,32 +9,35 @@ import { headers } from 'next/headers'
 export const dynamic = 'force-dynamic'
 
 async function recordView(packetId: string) {
-    const supabase = createClient()
     const headersList = await headers()
     const userAgent = headersList.get('user-agent') || 'unknown'
     // Simple IP hash (in real app, use better method or trust proxy headers)
     const ip = headersList.get('x-forwarded-for') || 'unknown'
 
     // We don't need to await this, fire and forget
-    supabase.from('packet_views').insert({
-        packet_id: packetId,
-        user_agent: userAgent,
-        ip_hash: ip // Storing raw IP for now as hash logic is complex server-side without crypto lib, user said "rough uniqueness"
-    }).then()
+    sql`
+        INSERT INTO packet_views (packet_id, user_agent, ip_hash)
+        VALUES (${packetId}, ${userAgent}, ${ip})
+    `.then()
 }
 
 export default async function PublicPacketPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
-    const supabase = createClient()
 
-    const { data: packet } = await supabase
-        .from('packets')
-        .select(`
-            *,
-            agent:agents(id, name, email, phone, headshot_url)
-        `)
-        .eq('slug', slug)
-        .single()
+    const { rows: [packet] } = await sql`
+        SELECT
+            p.*,
+            json_build_object(
+                'id', a.id,
+                'name', a.name,
+                'email', a.email,
+                'phone', a.phone,
+                'headshot_url', a.headshot_url
+            ) as agent
+        FROM packets p
+        LEFT JOIN agents a ON p.agent_id = a.id
+        WHERE p.slug = ${slug}
+    `
 
     if (!packet) {
         notFound()
@@ -43,11 +46,11 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
     // Record view
     recordView(packet.id)
 
-    const { data: items } = await supabase
-        .from('packet_items')
-        .select('*')
-        .eq('packet_id', packet.id)
-        .order('order', { ascending: true })
+    const { rows: items } = await sql`
+        SELECT * FROM packet_items
+        WHERE packet_id = ${packet.id}
+        ORDER BY "order" ASC
+    `
 
     return (
         <div className="min-h-screen bg-slate-50 relative">

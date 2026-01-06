@@ -1,19 +1,18 @@
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import Link from 'next/link'
 import PacketCard from '@/components/PacketCard'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AllPacketsPage() {
-    const supabase = createClient()
-
-    const { data: packets } = await supabase
-        .from('packets')
-        .select(`
-            *,
-            agent:agents(name)
-        `)
-        .order('created_at', { ascending: false })
+    const { rows: packets } = await sql`
+        SELECT
+            p.*,
+            json_build_object('name', a.name) as agent
+        FROM packets p
+        LEFT JOIN agents a ON p.agent_id = a.id
+        ORDER BY p.created_at DESC
+    `
 
     return (
         <div className="min-h-screen bg-slate-50">

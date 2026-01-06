@@ -1,0 +1,102 @@
+id,packet_id,type,label,url,content,order,created_at
+01ab87fa-3c9b-4d05-a197-141cf38ae952,3b612947-10a1-478c-81ab-a723687d0edd,link,Instagram Post - Stewart and Jane Group,https://www.instagram.com/p/DNn-pa5t9rr/?img_index=1,,6,2025-12-03 15:40:07.949768+00
+022231f2-8636-49b6-9ec5-60add3418a66,80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8,file,MLS Listing,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8/0.34854726136245184.pdf,,2,2025-12-05 16:56:28.646345+00
+0d7c34f6-2a47-4031-aa79-9c6910004146,80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8,text,What our seller's love about the property!,,"Fresh Paint within the last year
+New luxury vinyl flooring
+Granite counter-tops
+Custom cabinets
+Lots of natural light
+Excellent location for shopping, dining, and campus events",4,2025-12-05 16:56:28.646345+00
+14bc61e2-b379-43d5-9851-f6c9bbe24b40,5f2293e9-88f9-4df0-99be-a394689dbe5c,link,View the property on our website!,https://stewartandjane.com/4450-greenbriar-road-madisonville/,,3,2025-12-05 17:51:07.681185+00
+17b8235e-b513-4597-8871-3862abde3f0d,a4534603-72d0-4f6b-831b-c045ec953d7e,file,Castelgate CRR's,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/a4534603-72d0-4f6b-831b-c045ec953d7e/0.7962744766007182.pdf,,3,2025-12-08 22:15:03.931451+00
+1c0df733-d838-4717-a918-5e3689883a4a,73967b18-c928-4fb0-9ee7-92e8606e2cee,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/73967b18-c928-4fb0-9ee7-92e8606e2cee/0.26612845430355236.pdf,,1,2025-12-05 17:23:48.055463+00
+23d239b6-8e5c-4c31-865d-10f4ebb6b5d0,33adc5c1-5a43-400b-834f-056c9c711ba7,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/33adc5c1-5a43-400b-834f-056c9c711ba7/0.18706101879429293.pdf,,0,2025-12-09 19:21:22.718822+00
+2a8e88f8-9183-493d-94c1-8cea36b6e1f8,5f2293e9-88f9-4df0-99be-a394689dbe5c,file,MLS Listing,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5f2293e9-88f9-4df0-99be-a394689dbe5c/0.644990654563144.pdf,,2,2025-12-05 17:51:07.681185+00
+2c72b916-8d4d-48b7-8174-dfa85d1dc866,e4f78ee0-1bb0-4152-9491-b122fde198f1,file,MLS Listing,,,1,2025-12-23 17:15:34.810053+00
+3058f8ea-8d97-4f43-aa1d-1f64cce85476,5f2293e9-88f9-4df0-99be-a394689dbe5c,file,Sewer,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5f2293e9-88f9-4df0-99be-a394689dbe5c/0.2625909309378728.pdf,,7,2025-12-05 17:51:07.681185+00
+373429f3-9461-4d71-bf9b-fb61dcb3e091,a9133bd4-8bc3-455a-aeaf-61cf0aa66db9,link,View the property on our website!,https://stewartandjane.com/1804-potomac-place-college-station/,,3,2025-12-05 17:43:09.123465+00
+37670f3d-4a23-4d08-b91c-c4eed86cde01,d98718ec-e99d-4790-a3e9-f78b2a8409e2,file,Seller's Disclosure,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/d98718ec-e99d-4790-a3e9-f78b2a8409e2/0.6570889517220895.pdf,,2,2025-12-05 17:03:40.537126+00
+37695398-3442-4913-bcb4-35969675b8f7,d98718ec-e99d-4790-a3e9-f78b2a8409e2,file,MLS Worksheet,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/d98718ec-e99d-4790-a3e9-f78b2a8409e2/0.9328143974534453.pdf,,5,2025-12-05 17:03:40.537126+00
+37fcb699-4975-4bef-a03e-d912f0eae246,73967b18-c928-4fb0-9ee7-92e8606e2cee,text,What our seller's love about the property!,,"• Practically brand new (built in 2024)
+• Vaulted Ceilings
+• Open concept design maximize use of the space
+• Tile and Vinyl flooring
+• All Electric utilities",0,2025-12-05 17:23:48.055463+00
+3c35f2ad-377a-4e57-91b2-6663af5ede59,a9133bd4-8bc3-455a-aeaf-61cf0aa66db9,file,MLS Listing,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/a9133bd4-8bc3-455a-aeaf-61cf0aa66db9/0.9705264037492843.pdf,,2,2025-12-05 17:43:09.123465+00
+45fbc4fa-df23-4440-bb6e-af7ff8ed42ab,d98718ec-e99d-4790-a3e9-f78b2a8409e2,text,What our seller's love about the property!,,,0,2025-12-05 17:03:40.537126+00
+481c0cb5-ddc3-4610-a0d2-a438c472a6e3,5f2293e9-88f9-4df0-99be-a394689dbe5c,file,Seller's Disclosure,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5f2293e9-88f9-4df0-99be-a394689dbe5c/0.9335710959660959.pdf,,1,2025-12-05 17:51:07.681185+00
+583c016b-36ca-4094-83f4-4a53e5c57aac,33adc5c1-5a43-400b-834f-056c9c711ba7,text,What the landlord loves about the property!,,"• Close to Elementary and Intermediate Schools
+• Bonham Trace is a beautiful neighborhood
+• Open design concept with lots of natural light
+• Quartz countertops
+• Laminate and Tile flooring
+• Washer, Dryer, and Refrigerator included
+• Shopping, Grocery, and Dining nearby",5,2025-12-09 19:21:22.718822+00
+625cfb9c-a47d-4f4e-8770-00ccdb61d563,3b612947-10a1-478c-81ab-a723687d0edd,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/3b612947-10a1-478c-81ab-a723687d0edd/0.7599052727398176.pdf,,5,2025-12-03 15:40:07.949768+00
+62d9aa7c-171f-4d5e-a239-f5563facedc0,d98718ec-e99d-4790-a3e9-f78b2a8409e2,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/d98718ec-e99d-4790-a3e9-f78b2a8409e2/0.9865165139017863.pdf,,1,2025-12-05 17:03:40.537126+00
+6614e1ca-317b-433c-8fe7-227228f92b3f,33adc5c1-5a43-400b-834f-056c9c711ba7,file,MLS Listing,,,3,2025-12-09 19:21:22.718822+00
+66bf27e3-49ae-48ff-8ad9-b86374d6a36d,73967b18-c928-4fb0-9ee7-92e8606e2cee,link,View the property on our website!,https://stewartandjane.com/1601-w-17th-street-bryan/,,4,2025-12-05 17:23:48.055463+00
+67a470e9-08a9-4cc4-aa24-96a022bb2620,d98718ec-e99d-4790-a3e9-f78b2a8409e2,file,MLS Listing,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/d98718ec-e99d-4790-a3e9-f78b2a8409e2/0.09320441046786998.pdf,,3,2025-12-05 17:03:40.537126+00
+78fb1602-9457-40f9-9226-68426361f98f,a9133bd4-8bc3-455a-aeaf-61cf0aa66db9,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/a9133bd4-8bc3-455a-aeaf-61cf0aa66db9/0.4829040419987225.pdf,,0,2025-12-05 17:43:09.123465+00
+7a6a9c43-f84a-49d9-9791-50f0717db771,a4534603-72d0-4f6b-831b-c045ec953d7e,file,MLS Listing,,,0,2025-12-08 22:15:03.931451+00
+7c8c4417-9e90-46bc-a179-f5e62267c6f7,a4534603-72d0-4f6b-831b-c045ec953d7e,text,What the landlord loves about the property!,,"• Lower than average $/sqft
+• 3 Bed 2 Bath with flex area's
+• Large backyard, with outside seating area
+• Marble countertops
+• Bathing tub in master bathroom",1,2025-12-08 22:15:03.931451+00
+809b963a-34ef-4541-80a7-85c4a398848b,5fc4b4e6-5cd2-41a1-85aa-340f975b2d9f,file,MLS Listing,,,1,2025-12-23 17:15:26.702648+00
+8152e68a-425f-491e-8d02-90501f1980c1,33adc5c1-5a43-400b-834f-056c9c711ba7,link,View the full listing on our website!,https://listings.stewartandjane.com/p/2862-messenger-way,,2,2025-12-09 19:21:22.718822+00
+85e3299a-9613-44cd-8c7c-eb3e8073205a,3b612947-10a1-478c-81ab-a723687d0edd,text,What our seller's love about this house! 😍,,"• Practically new
+• Flawless interior paint
+• Quiet neighborhood
+• Granite counter-tops
+• Carpet and vinyl floors
+• Affordable HOA fees for common area maintenance",4,2025-12-03 15:40:07.949768+00
+8695b3b2-4056-4d3b-912c-0ed8afe5b148,5fc4b4e6-5cd2-41a1-85aa-340f975b2d9f,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5fc4b4e6-5cd2-41a1-85aa-340f975b2d9f/0.38920474829736385.pdf,,0,2025-12-23 17:15:26.702648+00
+8933aa03-672a-4402-b267-f35c1099d12f,5f2293e9-88f9-4df0-99be-a394689dbe5c,file,Home Upgrades,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5f2293e9-88f9-4df0-99be-a394689dbe5c/0.11208468881196154.pdf,,6,2025-12-05 17:51:07.681185+00
+8a782ef0-2042-43d5-b92e-8f7b214de775,73967b18-c928-4fb0-9ee7-92e8606e2cee,file,Seller's Disclosure,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/73967b18-c928-4fb0-9ee7-92e8606e2cee/0.7677410644626776.pdf,,2,2025-12-05 17:23:48.055463+00
+97023c8d-d6b3-4c61-980c-0f34ab81d89f,80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8,file,Condo Addendum,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8/0.6716912989514072.pdf,,1,2025-12-05 16:56:28.646345+00
+97b99ff3-d6d6-432b-8c90-ac81b06f5372,334ad42e-759f-41df-aa5b-4b1668670603,text,What Our Client Loves About this Home! 😍,,"Massive garage lined with peg board/built-in shelving and an extra area for storage or handy-work
+Office space near the front of the house
+Lots of windows and natural light features including a skylit soaking tub in the master bath
+Generous patio space for outdoor seating that is south facing to avoid harsh afternoon light
+Cornering the golf course provides privacy and ease of access to the amenity
+Stainless steel appliances and a built-in ice-maker",3,2025-12-09 20:16:29.197069+00
+9985e453-bbce-4fb7-a359-d7b6e3942456,334ad42e-759f-41df-aa5b-4b1668670603,file,Seller's Disclosure Notice,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/334ad42e-759f-41df-aa5b-4b1668670603/0.29948957840682067.pdf,,1,2025-12-09 20:16:29.197069+00
+a11ae7fc-49f1-4802-bb5b-ba2c837ed994,d98718ec-e99d-4790-a3e9-f78b2a8409e2,link,View the property on our website!,https://stewartandjane.com/4720-shoal-creek-drive-college-station/,,4,2025-12-05 17:03:40.537126+00
+a32086a6-6f7b-48ed-8f5f-5ba0073f4a9f,33adc5c1-5a43-400b-834f-056c9c711ba7,link,Rental Application Link,https://apply.link/BwyF2fg,,4,2025-12-09 19:21:22.718822+00
+a5fbe15a-1bb1-4d31-a65e-5217cf6ed44a,80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8/0.6664608505826319.pdf,,0,2025-12-05 16:56:28.646345+00
+a637c934-cc2f-4e6a-b951-8250fa91e95c,334ad42e-759f-41df-aa5b-4b1668670603,link,View the full property details on our website!,https://stewartandjane.com/4703-saint-andrews-drive-college-station/,,0,2025-12-09 20:16:29.197069+00
+a871ef03-2624-4a46-bed9-8aa4a9f22fc8,3b612947-10a1-478c-81ab-a723687d0edd,file,Affiliated Business Disclosure,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/3b612947-10a1-478c-81ab-a723687d0edd/0.19145806706491286.pdf,,0,2025-12-03 15:40:07.949768+00
+acaecddd-3421-4e14-972c-52008a46c528,334ad42e-759f-41df-aa5b-4b1668670603,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/334ad42e-759f-41df-aa5b-4b1668670603/0.9025920035984238.pdf,,2,2025-12-09 20:16:29.197069+00
+b890b91b-ac18-4952-bcc0-14d2f30840ac,80ebf2b3-7f79-4ac1-a0ec-4b7d15f311e8,link,View the property on our website!,https://stewartandjane.com/1725-harvey-mitchell-parkway-s-unit-1424-college-station/,,3,2025-12-05 16:56:28.646345+00
+bac33f40-0679-4bbf-a17e-941bd129a8fa,a9133bd4-8bc3-455a-aeaf-61cf0aa66db9,file,Addendum regarding leases,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/a9133bd4-8bc3-455a-aeaf-61cf0aa66db9/0.4204782984367401.pdf,,5,2025-12-05 17:43:09.123465+00
+bfbcc16a-0ea8-4e09-a05c-0d89c307ff4d,3b612947-10a1-478c-81ab-a723687d0edd,file,MLS Agent Full,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/3b612947-10a1-478c-81ab-a723687d0edd/0.022965113155627548.pdf,,3,2025-12-03 15:40:07.949768+00
+d126a5fd-8e3b-4d15-9a18-28c0eb229932,e4f78ee0-1bb0-4152-9491-b122fde198f1,text,What our seller's love about the property!,,"• Very affordable for a 4 bed 3 bath
+• Nearly 3,000 sqft
+• Excellent location near campus
+• In excellent condition",2,2025-12-23 17:15:34.810053+00
+d3347269-54ba-4cbe-abdb-aed66a73fa98,3b612947-10a1-478c-81ab-a723687d0edd,file,Seller's Disclosure,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/3b612947-10a1-478c-81ab-a723687d0edd/0.5027889706540786.pdf,,1,2025-12-03 15:40:07.949768+00
+d4bbed41-41cd-4ebd-97fa-9e02639e0371,5fc4b4e6-5cd2-41a1-85aa-340f975b2d9f,text,What our seller's love about the property!,,"• Very affordable for a 4 bed 3 bath
+• Nearly 3,000 sqft
+• Excellent location near campus
+• In excellent condition",2,2025-12-23 17:15:26.702648+00
+d6166e4c-47f2-45f8-9ae5-bcbcc6e8c954,5f2293e9-88f9-4df0-99be-a394689dbe5c,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5f2293e9-88f9-4df0-99be-a394689dbe5c/0.5318780483496692.pdf,,0,2025-12-05 17:51:07.681185+00
+d7a4d6d7-436b-4d65-9139-a2494bdbd647,5f2293e9-88f9-4df0-99be-a394689dbe5c,text,What our seller's love about the property!,,"• Aerobic Septic on site
+• Energy Star appliances
+• Generous square foot for a 3 bed 2 bath
+• Large detached garage and shop
+• Large 7 acre lot
+• Convenient location while being outside of major city areas",4,2025-12-05 17:51:07.681185+00
+e62d26c4-3971-48df-9e41-e5dc3b96717c,a9133bd4-8bc3-455a-aeaf-61cf0aa66db9,text,What our seller's love about the property!,,"• Excellent rental opportunity
+• Near campus with shopping and dining
+• Currently all 4 units are leased
+• Small outside area ideal for pet owners
+• Rare opportunity at a 4-plex in the area",4,2025-12-05 17:43:09.123465+00
+e632cb1b-c872-40b8-b3d2-688f271a0be6,73967b18-c928-4fb0-9ee7-92e8606e2cee,file,MLS Listing,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/73967b18-c928-4fb0-9ee7-92e8606e2cee/0.7393623878829858.pdf,,3,2025-12-05 17:23:48.055463+00
+e63a7f6e-67f7-4eb9-bc12-9f2b14889edf,33adc5c1-5a43-400b-834f-056c9c711ba7,file,Regarding Flood Disclosure,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/33adc5c1-5a43-400b-834f-056c9c711ba7/0.22548662577556577.pdf,,1,2025-12-09 19:21:22.718822+00
+e641fdd3-47fa-487b-bb25-fe39a377f964,e4f78ee0-1bb0-4152-9491-b122fde198f1,file,Offer Instructions,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/e4f78ee0-1bb0-4152-9491-b122fde198f1/0.35190313595434464.pdf,,0,2025-12-23 17:15:34.810053+00
+eacc58fa-8bc1-48ff-b744-a9271951922a,a4534603-72d0-4f6b-831b-c045ec953d7e,file,Qualifying Tenant Criteria,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/a4534603-72d0-4f6b-831b-c045ec953d7e/0.9973047392857389.pdf,,2,2025-12-08 22:15:03.931451+00
+ee3b5b68-68c3-40fe-bcbc-e4034e77f8cd,3b612947-10a1-478c-81ab-a723687d0edd,link,View the property on our website!,https://stewartandjane.com/6044-toby-bend-bryan/,,2,2025-12-03 15:40:07.949768+00
+f3bcce39-a0f6-43d0-95ec-baa0614b7c5e,5f2293e9-88f9-4df0-99be-a394689dbe5c,file,MLS Worksheet,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/5f2293e9-88f9-4df0-99be-a394689dbe5c/0.24130194920379722.pdf,,5,2025-12-05 17:51:07.681185+00
+f70ca485-d3cc-4485-9147-6c3ce60bc4c0,a9133bd4-8bc3-455a-aeaf-61cf0aa66db9,file,Minerals DO NOT Convey,https://nmkumbqfakufzqajccsn.supabase.co/storage/v1/object/public/packet-assets/a9133bd4-8bc3-455a-aeaf-61cf0aa66db9/0.054370048025440654.pdf,,1,2025-12-05 17:43:09.123465+00

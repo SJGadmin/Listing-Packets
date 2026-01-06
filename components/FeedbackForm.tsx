@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase'
 import { Star } from 'lucide-react'
 
 export default function FeedbackForm({ packetId }: { packetId: string }) {
@@ -24,24 +23,30 @@ export default function FeedbackForm({ packetId }: { packetId: string }) {
         setLoading(true)
         setError('')
 
-        const supabase = createClient()
-        const { error: submitError } = await supabase
-            .from('packet_feedback')
-            .insert({
-                packet_id: packetId,
-                agent_name: agentName,
-                feedback: feedback,
-                rating: rating
+        try {
+            const response = await fetch('/api/feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    packet_id: packetId,
+                    agent_name: agentName,
+                    feedback: feedback,
+                    rating: rating
+                })
             })
 
-        setLoading(false)
+            if (!response.ok) {
+                throw new Error('Failed to submit feedback')
+            }
 
-        if (submitError) {
+            setSubmitted(true)
+        } catch (error) {
             setError('Failed to submit feedback. Please try again.')
-            return
+        } finally {
+            setLoading(false)
         }
-
-        setSubmitted(true)
     }
 
     if (submitted) {

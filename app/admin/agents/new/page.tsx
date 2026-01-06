@@ -1,6 +1,5 @@
 'use client'
 
-import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -22,25 +21,29 @@ export default function NewAgentPage() {
         const phone = formData.get('phone') as string
         const headshot_url = formData.get('headshot_url') as string
 
-        const supabase = createClient()
-
-        const { error: insertError } = await supabase
-            .from('agents')
-            .insert({
-                name,
-                email: email || null,
-                phone: phone || null,
-                headshot_url: headshot_url || null,
+        try {
+            const response = await fetch('/api/agents', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    email: email || null,
+                    phone: phone || null,
+                    headshot_url: headshot_url || null,
+                }),
             })
 
-        if (insertError) {
-            setError(insertError.message)
-            setLoading(false)
-            return
-        }
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || 'Failed to create agent')
+            }
 
-        router.push('/admin/agents')
-        router.refresh()
+            router.push('/admin/agents')
+            router.refresh()
+        } catch (err: any) {
+            setError(err.message)
+            setLoading(false)
+        }
     }
 
     return (

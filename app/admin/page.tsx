@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import Link from 'next/link'
 import { Plus, ExternalLink, Eye, Calendar, MessageSquare } from 'lucide-react'
 import { Packet } from '@/types'
@@ -7,38 +7,25 @@ import DeletePacketButton from '@/components/DeletePacketButton'
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
-    const supabase = createClient()
-
-    // Fetch packets
-    const { data: packets, error } = await supabase
-        .from('packets')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-    // Fetch view counts and feedback counts separately for each packet
-    const packetsWithViews = await Promise.all(
-        (packets || []).map(async (packet) => {
-            const { count: viewCount } = await supabase
-                .from('packet_views')
-                .select('*', { count: 'exact', head: true })
-                .eq('packet_id', packet.id)
-
-            const { count: feedbackCount } = await supabase
-                .from('packet_feedback')
-                .select('*', { count: 'exact', head: true })
-                .eq('packet_id', packet.id)
-
-            return { ...packet, viewCount: viewCount || 0, feedbackCount: feedbackCount || 0 }
-        })
-    )
-
-    if (error) {
-        return (
-            <div className="p-4 bg-red-50 text-red-600 rounded-md">
-                Error loading packets: {error.message}
-            </div>
-        )
-    }
+    // Fetch packets with view counts and feedback counts in a single query
+    const { rows: packetsWithViews } = await sql`
+        SELECT
+            p.*,
+            COALESCE(v.view_count, 0) as "viewCount",
+            COALESCE(f.feedback_count, 0) as "feedbackCount"
+        FROM packets p
+        LEFT JOIN (
+            SELECT packet_id, COUNT(*) as view_count
+            FROM packet_views
+            GROUP BY packet_id
+        ) v ON p.id = v.packet_id
+        LEFT JOIN (
+            SELECT packet_id, COUNT(*) as feedback_count
+            FROM packet_feedback
+            GROUP BY packet_id
+        ) f ON p.id = f.packet_id
+        ORDER BY p.created_at DESC
+    `
 
     return (
         <div>

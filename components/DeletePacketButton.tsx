@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase'
 import { Trash2 } from 'lucide-react'
 
 export default function DeletePacketButton({ packetId, packetTitle }: { packetId: string, packetTitle: string }) {
@@ -12,20 +11,22 @@ export default function DeletePacketButton({ packetId, packetTitle }: { packetId
 
     const handleDelete = async () => {
         setIsDeleting(true)
-        const supabase = createClient()
 
-        const { error } = await supabase
-            .from('packets')
-            .delete()
-            .eq('id', packetId)
+        try {
+            const response = await fetch(`/api/packets/${packetId}`, {
+                method: 'DELETE',
+            })
 
-        if (error) {
+            if (!response.ok) {
+                const data = await response.json()
+                throw new Error(data.error || 'Failed to delete packet')
+            }
+
+            router.refresh()
+        } catch (error: any) {
             alert('Failed to delete packet: ' + error.message)
             setIsDeleting(false)
-            return
         }
-
-        router.refresh()
     }
 
     if (showConfirm) {

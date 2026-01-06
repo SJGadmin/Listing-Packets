@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Star, Calendar, User } from 'lucide-react'
@@ -8,25 +8,22 @@ export const dynamic = 'force-dynamic'
 
 export default async function PacketFeedbackPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const supabase = createClient()
 
     // Fetch packet info
-    const { data: packet } = await supabase
-        .from('packets')
-        .select('id, title, slug')
-        .eq('id', id)
-        .single()
+    const { rows: [packet] } = await sql`
+        SELECT id, title, slug FROM packets WHERE id = ${id}
+    `
 
     if (!packet) {
         notFound()
     }
 
     // Fetch feedback for this packet
-    const { data: feedbackList } = await supabase
-        .from('packet_feedback')
-        .select('*')
-        .eq('packet_id', id)
-        .order('created_at', { ascending: false })
+    const { rows: feedbackList } = await sql`
+        SELECT * FROM packet_feedback
+        WHERE packet_id = ${id}
+        ORDER BY created_at DESC
+    `
 
     const renderStars = (rating: number) => {
         return (

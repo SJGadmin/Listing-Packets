@@ -1,24 +1,13 @@
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 import Link from 'next/link'
 import { Plus, User, Phone, Mail } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AgentsPage() {
-    const supabase = createClient()
-
-    const { data: agents, error } = await supabase
-        .from('agents')
-        .select('*')
-        .order('name', { ascending: true })
-
-    if (error) {
-        return (
-            <div className="p-4 bg-red-50 text-red-600 rounded-md">
-                Error loading agents: {error.message}
-            </div>
-        )
-    }
+    const { rows: agents } = await sql`
+        SELECT * FROM agents ORDER BY name ASC
+    `
 
     return (
         <div>

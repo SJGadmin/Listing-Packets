@@ -1,11 +1,10 @@
 import PacketForm from '@/components/PacketForm'
-import { createClient } from '@/lib/supabase'
+import { sql } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
 export default async function NewPacketPage() {
-    const supabase = createClient()
-    const { data: agents } = await supabase.from('agents').select('*').order('name', { ascending: true })
+    const { rows: agents } = await sql`SELECT * FROM agents ORDER BY name ASC`
 
     return (
         <div>
