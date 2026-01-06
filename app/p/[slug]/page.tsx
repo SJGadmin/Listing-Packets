@@ -5,6 +5,7 @@ import DescriptionAccordion from '@/components/DescriptionAccordion'
 import FormattedText from '@/components/FormattedText'
 import FeedbackForm from '@/components/FeedbackForm'
 import { headers } from 'next/headers'
+import { Packet, PacketItem } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,7 +25,7 @@ async function recordView(packetId: string) {
 export default async function PublicPacketPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
 
-    const { rows: [packet] } = await sql`
+    const { rows: [packetRow] } = await sql`
         SELECT
             p.*,
             json_build_object(
@@ -39,18 +40,20 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
         WHERE p.slug = ${slug}
     `
 
-    if (!packet) {
+    if (!packetRow) {
         notFound()
     }
+    const packet = packetRow as any
 
     // Record view
     recordView(packet.id)
 
-    const { rows: items } = await sql`
+    const { rows: itemRows } = await sql`
         SELECT * FROM packet_items
         WHERE packet_id = ${packet.id}
         ORDER BY "order" ASC
     `
+    const items = itemRows as PacketItem[]
 
     return (
         <div className="min-h-screen bg-slate-50 relative">
