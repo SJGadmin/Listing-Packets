@@ -1,0 +1,83 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Agent {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  phone        String?
+  email        String?
+  headshot_url String?
+  created_at   DateTime @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  updated_at   DateTime @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  packets      Packet[]
+
+  @@map("agents")
+}
+
+model Packet {
+  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug            String           @unique
+  title           String
+  subtitle        String?
+  description     String?
+  cover_image_url String?
+  agent_id        String?          @db.Uuid
+  created_at      DateTime         @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  updated_at      DateTime         @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  agent           Agent?           @relation(fields: [agent_id], references: [id], onDelete: SetNull)
+  items           PacketItem[]
+  views           PacketView[]
+  feedback        PacketFeedback[]
+
+  @@index([slug])
+  @@index([agent_id])
+  @@map("packets")
+}
+
+model PacketItem {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  packet_id  String   @db.Uuid
+  type       String
+  label      String
+  url        String?
+  content    String?
+  order      Int      @default(0)
+  created_at DateTime @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  packet     Packet   @relation(fields: [packet_id], references: [id], onDelete: Cascade)
+
+  @@index([packet_id])
+  @@index([packet_id, order])
+  @@map("packet_items")
+}
+
+model PacketView {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  packet_id  String   @db.Uuid
+  user_agent String?
+  ip_hash    String?
+  created_at DateTime @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  packet     Packet   @relation(fields: [packet_id], references: [id], onDelete: Cascade)
+
+  @@index([packet_id])
+  @@map("packet_views")
+}
+
+model PacketFeedback {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  packet_id  String   @db.Uuid
+  agent_name String
+  feedback   String
+  rating     Int
+  created_at DateTime @default(dbgenerated("TIMEZONE('utc'::text, NOW())")) @db.Timestamptz(6)
+  packet     Packet   @relation(fields: [packet_id], references: [id], onDelete: Cascade)
+
+  @@index([packet_id])
+  @@map("packet_feedback")
+}

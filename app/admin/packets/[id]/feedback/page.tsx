@@ -1,30 +1,33 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Star, Calendar, User } from 'lucide-react'
-import { PacketFeedback } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
 export default async function PacketFeedbackPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
 
-    // Fetch packet info
-    const { rows: [packet] } = await sql`
-        SELECT id, title, slug FROM packets WHERE id = ${id}
-    `
+    // Fetch packet info with feedback
+    const packet = await prisma.packet.findUnique({
+        where: { id },
+        select: {
+            id: true,
+            title: true,
+            slug: true,
+            feedback: {
+                orderBy: {
+                    created_at: 'desc'
+                }
+            }
+        }
+    })
 
     if (!packet) {
         notFound()
     }
 
-    // Fetch feedback for this packet
-    const { rows } = await sql`
-        SELECT * FROM packet_feedback
-        WHERE packet_id = ${id}
-        ORDER BY created_at DESC
-    `
-    const feedbackList = rows as PacketFeedback[]
+    const feedbackList = packet.feedback
 
     const renderStars = (rating: number) => {
         return (

@@ -1,18 +1,22 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import PacketCard from '@/components/PacketCard'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AllPacketsPage() {
-    const { rows: packets } = await sql`
-        SELECT
-            p.*,
-            json_build_object('name', a.name) as agent
-        FROM packets p
-        LEFT JOIN agents a ON p.agent_id = a.id
-        ORDER BY p.created_at DESC
-    `
+    const packets = await prisma.packet.findMany({
+        include: {
+            agent: {
+                select: {
+                    name: true
+                }
+            }
+        },
+        orderBy: {
+            created_at: 'desc'
+        }
+    })
 
     return (
         <div className="min-h-screen bg-slate-50">

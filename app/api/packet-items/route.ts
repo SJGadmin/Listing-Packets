@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 // POST /api/packet-items - Create packet items
@@ -7,16 +7,22 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const { packet_id, items } = body
 
-        // Delete existing items first
-        await sql`DELETE FROM packet_items WHERE packet_id = ${packet_id}`
-
-        // Insert new items
-        for (const item of items) {
-            await sql`
-                INSERT INTO packet_items (packet_id, type, label, url, content, "order")
-                VALUES (${packet_id}, ${item.type}, ${item.label}, ${item.url}, ${item.content}, ${item.order})
-            `
-        }
+        // Delete existing items and create new ones in a transaction
+        await prisma.$transaction([
+            prisma.packetItem.deleteMany({
+                where: { packet_id }
+            }),
+            prisma.packetItem.createMany({
+                data: items.map((item: any) => ({
+                    packet_id,
+                    type: item.type,
+                    label: item.label,
+                    url: item.url || null,
+                    content: item.content || null,
+                    order: item.order
+                }))
+            })
+        ])
 
         return NextResponse.json({ success: true })
     } catch (error: any) {

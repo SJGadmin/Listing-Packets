@@ -1,31 +1,31 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { Plus, ExternalLink, Eye, Calendar, MessageSquare } from 'lucide-react'
-import { Packet } from '@/types'
 import DeletePacketButton from '@/components/DeletePacketButton'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
-    // Fetch packets with view counts and feedback counts in a single query
-    const { rows: packetsWithViews } = await sql`
-        SELECT
-            p.*,
-            COALESCE(v.view_count, 0) as "viewCount",
-            COALESCE(f.feedback_count, 0) as "feedbackCount"
-        FROM packets p
-        LEFT JOIN (
-            SELECT packet_id, COUNT(*) as view_count
-            FROM packet_views
-            GROUP BY packet_id
-        ) v ON p.id = v.packet_id
-        LEFT JOIN (
-            SELECT packet_id, COUNT(*) as feedback_count
-            FROM packet_feedback
-            GROUP BY packet_id
-        ) f ON p.id = f.packet_id
-        ORDER BY p.created_at DESC
-    `
+    // Fetch packets with view counts and feedback counts
+    const packets = await prisma.packet.findMany({
+        include: {
+            _count: {
+                select: {
+                    views: true,
+                    feedback: true
+                }
+            }
+        },
+        orderBy: {
+            created_at: 'desc'
+        }
+    })
+
+    const packetsWithViews = packets.map(packet => ({
+        ...packet,
+        viewCount: packet._count.views,
+        feedbackCount: packet._count.feedback
+    }))
 
     return (
         <div>

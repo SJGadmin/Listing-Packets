@@ -1,13 +1,13 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { Plus, User, Phone, Mail } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AgentsPage() {
-    const { rows: agents } = await sql`
-        SELECT * FROM agents ORDER BY name ASC
-    `
+    const agents = await prisma.agent.findMany({
+        orderBy: { name: 'asc' }
+    })
 
     return (
         <div>

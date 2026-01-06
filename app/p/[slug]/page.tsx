@@ -1,11 +1,10 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import PacketItemCard from '@/components/PacketItemCard'
 import DescriptionAccordion from '@/components/DescriptionAccordion'
 import FormattedText from '@/components/FormattedText'
 import FeedbackForm from '@/components/FeedbackForm'
 import { headers } from 'next/headers'
-import { Packet, PacketItem } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,44 +15,38 @@ async function recordView(packetId: string) {
     const ip = headersList.get('x-forwarded-for') || 'unknown'
 
     // We don't need to await this, fire and forget
-    sql`
-        INSERT INTO packet_views (packet_id, user_agent, ip_hash)
-        VALUES (${packetId}, ${userAgent}, ${ip})
-    `.then()
+    prisma.packetView.create({
+        data: {
+            packet_id: packetId,
+            user_agent: userAgent,
+            ip_hash: ip
+        }
+    }).then()
 }
 
 export default async function PublicPacketPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
 
-    const { rows: [packetRow] } = await sql`
-        SELECT
-            p.*,
-            json_build_object(
-                'id', a.id,
-                'name', a.name,
-                'email', a.email,
-                'phone', a.phone,
-                'headshot_url', a.headshot_url
-            ) as agent
-        FROM packets p
-        LEFT JOIN agents a ON p.agent_id = a.id
-        WHERE p.slug = ${slug}
-    `
+    const packet = await prisma.packet.findUnique({
+        where: { slug },
+        include: {
+            agent: true,
+            items: {
+                orderBy: {
+                    order: 'asc'
+                }
+            }
+        }
+    })
 
-    if (!packetRow) {
+    if (!packet) {
         notFound()
     }
-    const packet = packetRow as any
 
     // Record view
     recordView(packet.id)
 
-    const { rows: itemRows } = await sql`
-        SELECT * FROM packet_items
-        WHERE packet_id = ${packet.id}
-        ORDER BY "order" ASC
-    `
-    const items = itemRows as PacketItem[]
+    const items = packet.items
 
     return (
         <div className="min-h-screen bg-slate-50 relative">

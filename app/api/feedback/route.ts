@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 // POST /api/feedback - Submit feedback
@@ -6,10 +6,14 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
 
-        await sql`
-            INSERT INTO packet_feedback (packet_id, agent_name, feedback, rating)
-            VALUES (${body.packet_id}, ${body.agent_name}, ${body.feedback}, ${body.rating})
-        `
+        await prisma.packetFeedback.create({
+            data: {
+                packet_id: body.packet_id,
+                agent_name: body.agent_name,
+                feedback: body.feedback,
+                rating: body.rating
+            }
+        })
 
         return NextResponse.json({ success: true })
     } catch (error: any) {

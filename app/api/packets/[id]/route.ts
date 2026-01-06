@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 // DELETE /api/packets/[id] - Delete a packet
@@ -9,7 +9,9 @@ export async function DELETE(
     try {
         const { id } = await params
 
-        await sql`DELETE FROM packets WHERE id = ${id}`
+        await prisma.packet.delete({
+            where: { id }
+        })
 
         return NextResponse.json({ success: true })
     } catch (error: any) {
@@ -29,18 +31,18 @@ export async function PUT(
         const { id } = await params
         const body = await request.json()
 
-        await sql`
-            UPDATE packets
-            SET
-                slug = ${body.slug},
-                title = ${body.title},
-                subtitle = ${body.subtitle},
-                description = ${body.description},
-                cover_image_url = ${body.cover_image_url},
-                agent_id = ${body.agent_id},
-                updated_at = NOW()
-            WHERE id = ${id}
-        `
+        await prisma.packet.update({
+            where: { id },
+            data: {
+                slug: body.slug,
+                title: body.title,
+                subtitle: body.subtitle,
+                description: body.description,
+                cover_image_url: body.cover_image_url,
+                agent_id: body.agent_id || null,
+                updated_at: new Date()
+            }
+        })
 
         return NextResponse.json({ success: true })
     } catch (error: any) {

@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
 // GET /api/agents/[id] - Get a single agent
@@ -9,15 +9,15 @@ export async function GET(
     try {
         const { id } = await params
 
-        const { rows } = await sql`
-            SELECT * FROM agents WHERE id = ${id}
-        `
+        const agent = await prisma.agent.findUnique({
+            where: { id }
+        })
 
-        if (rows.length === 0) {
+        if (!agent) {
             return NextResponse.json({ error: 'Agent not found' }, { status: 404 })
         }
 
-        return NextResponse.json(rows[0])
+        return NextResponse.json(agent)
     } catch (error: any) {
         return NextResponse.json(
             { error: error.message },
@@ -35,16 +35,16 @@ export async function PUT(
         const { id } = await params
         const body = await request.json()
 
-        await sql`
-            UPDATE agents
-            SET
-                name = ${body.name},
-                email = ${body.email},
-                phone = ${body.phone},
-                headshot_url = ${body.headshot_url},
-                updated_at = NOW()
-            WHERE id = ${id}
-        `
+        await prisma.agent.update({
+            where: { id },
+            data: {
+                name: body.name,
+                email: body.email || null,
+                phone: body.phone || null,
+                headshot_url: body.headshot_url || null,
+                updated_at: new Date()
+            }
+        })
 
         return NextResponse.json({ success: true })
     } catch (error: any) {
@@ -63,7 +63,9 @@ export async function DELETE(
     try {
         const { id } = await params
 
-        await sql`DELETE FROM agents WHERE id = ${id}`
+        await prisma.agent.delete({
+            where: { id }
+        })
 
         return NextResponse.json({ success: true })
     } catch (error: any) {

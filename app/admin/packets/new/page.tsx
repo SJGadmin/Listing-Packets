@@ -1,10 +1,12 @@
 import PacketForm from '@/components/PacketForm'
-import { sql } from '@/lib/db'
+import { prisma } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
 export default async function NewPacketPage() {
-    const { rows: agents } = await sql`SELECT * FROM agents ORDER BY name ASC`
+    const agents = await prisma.agent.findMany({
+        orderBy: { name: 'asc' }
+    })
 
     return (
         <div>
