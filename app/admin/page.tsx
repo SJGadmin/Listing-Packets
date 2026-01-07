@@ -2,6 +2,18 @@ import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { Plus, ExternalLink, Eye, Calendar, MessageSquare } from 'lucide-react'
 import DeletePacketButton from '@/components/DeletePacketButton'
+import { Prisma } from '@prisma/client'
+
+type PacketWithCounts = Prisma.PacketGetPayload<{
+    include: {
+        _count: {
+            select: {
+                views: true
+                feedback: true
+            }
+        }
+    }
+}>
 
 export const dynamic = 'force-dynamic'
 
@@ -21,7 +33,7 @@ export default async function AdminDashboard() {
         }
     })
 
-    const packetsWithViews = packets.map(packet => ({
+    const packetsWithViews = packets.map((packet: PacketWithCounts) => ({
         ...packet,
         viewCount: packet._count.views,
         feedbackCount: packet._count.feedback
