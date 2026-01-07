@@ -131,7 +131,7 @@ export default async function PacketFeedbackPage({ params }: { params: Promise<{
                             <p className="text-sm text-slate-500 mb-1">Average Rating</p>
                             <div className="flex items-center gap-2">
                                 <p className="text-2xl font-bold text-slate-900">
-                                    {(feedbackList.reduce((acc, f) => acc + f.rating, 0) / feedbackList.length).toFixed(1)}
+                                    {(feedbackList.reduce((acc: number, f: PacketFeedback) => acc + f.rating, 0) / feedbackList.length).toFixed(1)}
                                 </p>
                                 <Star size={20} className="fill-yellow-400 stroke-yellow-500" />
                             </div>
@@ -139,7 +139,7 @@ export default async function PacketFeedbackPage({ params }: { params: Promise<{
                         <div>
                             <p className="text-sm text-slate-500 mb-1">5 Star Reviews</p>
                             <p className="text-2xl font-bold text-slate-900">
-                                {feedbackList.filter(f => f.rating === 5).length}
+                                {feedbackList.filter((f: PacketFeedback) => f.rating === 5).length}
                             </p>
                         </div>
                         <div>
