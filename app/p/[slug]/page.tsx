@@ -5,6 +5,9 @@ import DescriptionAccordion from '@/components/DescriptionAccordion'
 import FormattedText from '@/components/FormattedText'
 import FeedbackForm from '@/components/FeedbackForm'
 import { headers } from 'next/headers'
+import { Prisma } from '@prisma/client'
+
+type PacketItem = Prisma.PacketItemGetPayload<{}>
 
 export const dynamic = 'force-dynamic'
 
@@ -166,7 +169,7 @@ export default async function PublicPacketPage({ params }: { params: Promise<{ s
 
             {/* Content Section */}
             <div className="max-w-[95%] md:max-w-7xl mx-auto px-4 py-12 space-y-6">
-                {items?.map((item) => (
+                {items?.map((item: PacketItem) => (
                     <PacketItemCard key={item.id} item={item} />
                 ))}
 
