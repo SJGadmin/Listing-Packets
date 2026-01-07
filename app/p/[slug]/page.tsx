@@ -5,9 +5,7 @@ import DescriptionAccordion from '@/components/DescriptionAccordion'
 import FormattedText from '@/components/FormattedText'
 import FeedbackForm from '@/components/FeedbackForm'
 import { headers } from 'next/headers'
-import { Prisma } from '@prisma/client'
-
-type PacketItem = Prisma.PacketItemGetPayload<{}>
+import type { PacketItem } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
