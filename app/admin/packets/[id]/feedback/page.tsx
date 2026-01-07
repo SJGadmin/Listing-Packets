@@ -2,6 +2,7 @@ import { prisma } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Star, Calendar, User } from 'lucide-react'
+import type { PacketFeedback } from '@prisma/client'
 
 export const dynamic = 'force-dynamic'
 
@@ -67,7 +68,7 @@ export default async function PacketFeedbackPage({ params }: { params: Promise<{
             {/* Feedback List */}
             <div className="space-y-4">
                 {feedbackList && feedbackList.length > 0 ? (
-                    feedbackList.map((feedback) => (
+                    feedbackList.map((feedback: PacketFeedback) => (
                         <div
                             key={feedback.id}
                             className="bg-white rounded-lg shadow-sm border border-slate-200 p-6"
