@@ -2,7 +2,10 @@ import { prisma } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Star, Calendar, User } from 'lucide-react'
-import type { PacketFeedback } from '@prisma/client'
+import { Prisma } from '@prisma/client'
+
+type PacketFeedback = Prisma.PacketFeedbackGetPayload<{}>
+
 
 export const dynamic = 'force-dynamic'
 
