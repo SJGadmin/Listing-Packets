@@ -2,6 +2,7 @@ import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { Plus, ExternalLink, Eye, Calendar, MessageSquare } from 'lucide-react'
 import DeletePacketButton from '@/components/DeletePacketButton'
+import MarkSoldButton from '@/components/MarkSoldButton'
 import { Prisma } from '@prisma/client'
 
 type PacketWithCounts = Prisma.PacketGetPayload<{
@@ -18,8 +19,9 @@ type PacketWithCounts = Prisma.PacketGetPayload<{
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
-    // Fetch packets with view counts and feedback counts
-    const packets = await prisma.packet.findMany({
+    // Fetch active packets (not sold)
+    const activePackets = await prisma.packet.findMany({
+        where: { sold_at: null },
         include: {
             _count: {
                 select: {
@@ -33,7 +35,15 @@ export default async function AdminDashboard() {
         }
     })
 
-    const packetsWithViews = packets.map((packet: PacketWithCounts) => ({
+    // Fetch sold packets
+    const soldPackets = await prisma.packet.findMany({
+        where: { sold_at: { not: null } },
+        orderBy: {
+            sold_at: 'desc'
+        }
+    })
+
+    const packetsWithViews = activePackets.map((packet: PacketWithCounts) => ({
         ...packet,
         viewCount: packet._count.views,
         feedbackCount: packet._count.feedback
@@ -107,6 +117,7 @@ export default async function AdminDashboard() {
                                     </span>
                                 )}
                             </Link>
+                            <MarkSoldButton packetId={packet.id} packetTitle={packet.title} />
                             <Link
                                 href={`/admin/packets/${packet.id}`}
                                 className="px-4 py-2 border border-slate-200 text-slate-600 rounded-md hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium"
@@ -131,6 +142,26 @@ export default async function AdminDashboard() {
                     </div>
                 )}
             </div>
+
+            {/* Sold Packets Section */}
+            {soldPackets.length > 0 && (
+                <div className="mt-12">
+                    <h2 className="text-lg font-semibold text-slate-700 mb-4">Sold Properties</h2>
+                    <div className="bg-slate-50 rounded-lg border border-slate-200 divide-y divide-slate-200">
+                        {soldPackets.map((packet: any) => (
+                            <div key={packet.id} className="px-6 py-4 flex items-center justify-between">
+                                <div>
+                                    <h3 className="font-medium text-slate-700">{packet.title}</h3>
+                                    <p className="text-xs text-slate-400">
+                                        Sold {new Date(packet.sold_at).toLocaleDateString()}
+                                    </p>
+                                </div>
+                                <DeletePacketButton packetId={packet.id} packetTitle={packet.title} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

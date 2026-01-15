@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function AllPacketsPage() {
     const packets = await prisma.packet.findMany({
+        where: { sold_at: null },
         include: {
             agent: {
                 select: {
